@@ -137,16 +137,21 @@ public class CrosswordMagicViewModel extends ViewModel {
             // Word object to the "wordMap" hash map; for the key names, use the box number
             // followed by the direction (for example, "16D" for Box # 16, Down).
                 while((line = br.readLine()) != null){
-                    fields = line.split("\t");
+                    fields = line.trim().split("\t");
 
                     if(fields.length == Word.HEADER_FIELDS){
                         puzzleHeight.setValue(Integer.parseInt(fields[0]));
                         puzzleWidth.setValue(Integer.parseInt(fields[1]));
+
                     }
 
                     else if (fields.length == Word.DATA_FIELDS) {
 
                         Word w = new Word(fields);
+                        int key1 = w.getRow() + w.getColumn();
+                        String key2 = String.valueOf(key1);
+                        wordMap.put(key2, w);
+
                         String key = w.getBox() + w.getDirection();
                         wordMap.put(key, w);
                         if (w.getDirection().equals(Word.ACROSS)) {
@@ -155,8 +160,15 @@ public class CrosswordMagicViewModel extends ViewModel {
                         else if ( w.getDirection().equals(Word.DOWN)) {
                             dString.append(w.getClue());
                            {
+                         String word = w.getWord();
+                         wordMap.put(word, w);
+
+
+
 
                             }
+
+
                         }
 
                     }
