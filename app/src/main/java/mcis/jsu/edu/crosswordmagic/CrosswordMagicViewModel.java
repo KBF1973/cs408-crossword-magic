@@ -3,7 +3,6 @@ package mcis.jsu.edu.crosswordmagic;
 import android.arch.lifecycle.MutableLiveData;
 import android.arch.lifecycle.ViewModel;
 import android.content.Context;
-import android.support.annotation.NonNull;
 import android.util.Log;
 
 import java.io.BufferedReader;
@@ -137,32 +136,48 @@ public class CrosswordMagicViewModel extends ViewModel {
             // into an array of strings, which you can use to initialize a Word object.  Add each
             // Word object to the "wordMap" hash map; for the key names, use the box number
             // followed by the direction (for example, "16D" for Box # 16, Down).
-            while((line = br.readLine()) != null){
-                fields = line.trim().split("\t");
+                while((line = br.readLine()) != null){
+                    fields = line.trim().split("\t");
 
-                if(fields.length == Word.HEADER_FIELDS){
-                    puzzleHeight.setValue(Integer.parseInt(fields[0]));
-                    puzzleWidth.setValue(Integer.parseInt(fields[1]));
-
-                }
-
-                else if (fields.length == Word.DATA_FIELDS) {
-
-                    Word w = new Word(fields);
-
-                    String key = w.getBox() + w.getDirection();
-                    wordMap.put(key, w);
-                    if (w.getDirection().equals(Word.ACROSS)) {
-                        aString.append(w.getClue());
-                    }
-                    else if ( w.getDirection().equals(Word.DOWN)) {
-                        dString.append(w.getClue());
+                    if(fields.length == Word.HEADER_FIELDS){
+                        puzzleHeight.setValue(Integer.parseInt(fields[0]));
+                        puzzleWidth.setValue(Integer.parseInt(fields[1]));
 
                     }
 
+                    else if (fields.length == Word.DATA_FIELDS) {
+
+                        Word w = new Word(fields);
+                        int key1 = w.getRow() + w.getColumn();
+                        String key2 = String.valueOf(key1);
+                        wordMap.put(key2, w);
+
+                        String key = w.getBox() + w.getDirection();
+                        wordMap.put(key, w);
+                        if (w.getDirection().equals(Word.ACROSS)) {
+                            aString.append(w.getClue());
+                        }
+                        else if ( w.getDirection().equals(Word.DOWN)) {
+                            dString.append(w.getClue());
+                           {
+                         String word = w.getWord();
+                         wordMap.put(word, w);
+
+
+
+
+                            }
+
+
+                        }
+
+                    }
+
                 }
 
-            }
+
+
+
 
 
 
@@ -187,65 +202,12 @@ public class CrosswordMagicViewModel extends ViewModel {
 
             Word w = e.getValue();
 
-            int row = w. getRow();
-            int col = w.getColumn();
-            String word = w.getWord();
-            String dir = w.getDirection();
-            aNumbers[row][col] = w.getBox();
-
-            for(int i = 0; i < word.length(); i++) {
-                char c = word.charAt(i);
-                aLetters[row][col] = ' ';
-                if(dir.equals(Word.ACROSS)){
-                    ++col;
-
-                }
-
-                else if(dir.equals(Word.DOWN)){
-                    ++row;
-                }
-            }
+            // INSERT YOUR CODE HERE
 
         }
 
         this.letters.setValue(aLetters);
         this.numbers.setValue(aNumbers);
-
-    }
-    public Word getWord(String key){
-
-        return(words.getValue().get(key));
-
-
-
-    }
-
-    public void addWordToGrid(String key){
-
-
-        Character[][] updateLetters = letters.getValue();
-        Word w = (words.getValue().get(key));
-
-        int row = w. getRow();
-        int col = w.getColumn();
-        String word = w.getWord();
-        String dir = w.getDirection();
-
-        for(int i = 0; i < word.length(); i++) {
-            char c = word.charAt(i);
-            updateLetters[row][col] = c;
-            if(dir.equals(Word.ACROSS)){
-                ++col;
-
-            }
-
-            else if(dir.equals(Word.DOWN)){
-                ++row;
-            }
-
-
-        }
-
 
     }
 
