@@ -3,4 +3,6 @@
     <string name="action_settings">Settings</string>
     <string name="across">Across:</string>
     <string name="down">Down:</string>
+    <string name="input_dialog_title">"Box Number"</string>
+    <string name="input__dialog_text">"Please Guess a Word!"</string>
 </resources>
